@@ -4,6 +4,8 @@ browser.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         on_show_hide("temp", "show_site_passwordstate");
         document.querySelector('#url_temp').value = message.url;
     }
+
+    return true;
 });
 
 //Send command to show site from Passwordstate in new tab

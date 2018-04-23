@@ -31,6 +31,8 @@ browser.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.name == 'set_to_page_card') {
         set_card_to_page(message.card);
     }
+
+    return true;
 });
 
 

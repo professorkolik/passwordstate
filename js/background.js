@@ -224,89 +224,95 @@ function get_one_card_for_site(new_card) {
 
 // Get password for id
 function get_password_for_id(url, auth_key, id) {
-    var dfd = new jQuery.Deferred();
+  return new Promise(function (resolve, reject) {
     $.ajax({
-        url: url + g_get_password_request,
-        data: { auth_key: auth_key, PasswordID: id },
-        async: false,
-        dataType: "json",
-        type: "POST",
-        success: function (data) {
-            dfd.resolve(data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-        	isErrorCookie(xhr.responseText);
-            dfd.resolve("");
-        }
+      url: url + g_get_password_request,
+      data: { auth_key: auth_key, PasswordID: id },
+      dataType: "json",
+      type: "POST",
+      success: function (data) {
+        resolve(data);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        isErrorCookie(xhr.responseText);
+        resolve("");
+      }
     });
-    return dfd.promise()
+  });
 }
 
 // Get cards list for a site
 function get_card_for_website(url) {
+  return new Promise(function (resolve, reject) {
     var password_id = [];
     var cards = [];
     var element = {}
     var site = ""
     var websites = getStorageMemory('websites');
     if (websites) {
-        for (var i = 0; i < websites.length; i++) {
-            if (url.indexOf(websites[i].URL) + 1) {
-               
-				var protocol="";
-				var host="";
-				var userProtocol="";
-				var userhost="";
-				
-                var urlRegex = /(https?:)?\/?\/?([www\.]?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~//]*)/
-				var tabURL = urlRegex.exec(url);
-				if(tabURL!=null){
-				
-					protocol = tabURL[1];
-					host = tabURL[2];        
-					var userUrl = urlRegex.exec(websites[i].URL);
-					userProtocol = userUrl[1];
-					userHost = userUrl[2];
+      for (var i = 0; i < websites.length; i++) {
+        if (url.indexOf(websites[i].URL) + 1) {
 
-				
-					if (((userProtocol && (userProtocol == protocol)) || !userProtocol) && (host == userHost)) {
-						site = websites[i].URL;
-						password_id.push(websites[i].PasswordID);
-					}				
-					
-				}
-				else{
-					
-					var arr = url.split("/");
-					if(arr!=null){
-						
-						protocol = arr[0];
-						host = arr[2].split(':')[0];
-						var userUrl = websites[i].URL.split("/");
-						userProtocol = userUrl[0];
-						userHost = userUrl[2].split(':')[0];
-						if (((userProtocol && (userProtocol == protocol)) || !userProtocol) && (host == userHost)) {
-							site = websites[i].URL;
-							password_id.push(websites[i].PasswordID);
-						}	
-						
-					}
-				}
-           }
+          var protocol="";
+          var host="";
+          var userProtocol="";
+          var userhost="";
+
+          var urlRegex = /(https?:)?\/?\/?([www\.]?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~//]*)/
+          var tabURL = urlRegex.exec(url);
+          if(tabURL!=null){
+
+            protocol = tabURL[1];
+            host = tabURL[2];
+            var userUrl = urlRegex.exec(websites[i].URL);
+            userProtocol = userUrl[1];
+            userHost = userUrl[2];
+
+
+            if (((userProtocol && (userProtocol == protocol)) || !userProtocol) && (host == userHost)) {
+              site = websites[i].URL;
+              password_id.push(websites[i].PasswordID);
+            }
+
+          }
+          else{
+
+            var arr = url.split("/");
+            if(arr!=null){
+
+              protocol = arr[0];
+              host = arr[2].split(':')[0];
+              var userUrl = websites[i].URL.split("/");
+              userProtocol = userUrl[0];
+              userHost = userUrl[2].split(':')[0];
+              if (((userProtocol && (userProtocol == protocol)) || !userProtocol) && (host == userHost)) {
+                site = websites[i].URL;
+                password_id.push(websites[i].PasswordID);
+              }
+
+            }
+          }
         }
+      }
     }
     if (password_id) {
-        for (var i = 0; i < password_id.length; i++) {
-            $.when( get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]) ).then(
-                function(data) {
-                    cards.push(data[0]);
-                }
-            );
-        }
+      for (var i = 0; i < password_id.length; i++) {
+        get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]).then(function(data) {
+          cards.push(data[0]);
+
+          element.url = site;
+          element.cards = cards;
+
+          resolve(element);
+        });
+      }
+    } else {
+      element.url = site;
+      element.cards = cards;
+
+      resolve(element);
     }
-    element.url = site;
-    element.cards = cards;
-    return element;
+  });
 }
 
 function get_card_for_website2(url) {
@@ -330,7 +336,7 @@ function get_card_for_website2(url) {
     }
     if (password_id) {
         for (var i = 0; i < password_id.length; i++) {
-            $.when( get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]) ).then(
+            get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]).then(
                 function(data) {
                     cards.push(data[0]);
                 }
@@ -352,22 +358,21 @@ function set_to_page_password(text) {
 // new password generation
 function generate_password(url, auth_key) {
     if (auth_key)  {
-        var dfd = new jQuery.Deferred();
-        $.ajax({
+        return new Promise(function (resolve, reject) {
+          $.ajax({
             url: url + g_generate_password_request,
             data: { auth_key: auth_key },
-            async: false,
             dataType: "json",
             type: "POST",
             success: function (data) {
-                dfd.resolve(data[0].Password);
+              resolve(data[0].Password);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-            	isErrorCookie(xhr.responseText);
-                dfd.resolve("");
+              isErrorCookie(xhr.responseText);
+              resolve("");
             }
+          });
         });
-        return dfd.promise();
     }
 }
 
@@ -553,11 +558,13 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         show_change_dlg("popup.html");
     }
     if (request.name == 'get_new_generate_password') {
-        $.when( generate_password(getStorageMemory('url'), getStorageMemory('auth_key')) ).then(
+        generate_password(getStorageMemory('url'), getStorageMemory('auth_key')).then(
             function(password) {
                 sendResponse({ 'password':  password});
             }
         );
+
+        return true;
     }
     
     if (request.name == 'copy_to_clipboard_password') {
@@ -568,16 +575,18 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         set_to_page_password(request.password);
     }
     if (request.name == 'get_card_for_website') {
-        var element = get_card_for_website(request.url);
-        if (element.cards.length != 0) {
-            if (element.cards.length == 1) {
-                sendResponse({'card': element.cards[0]});
+        get_card_for_website(request.url).then(function (element) {
+          if (element.cards.length > 0) {
+            if (element.cards.length === 1) {
+              sendResponse({'card': element.cards[0]});
             }
             else {
-                get_one_card_for_site(element);
-                sendResponse({'card': ""});
+              get_one_card_for_site(element);
+              sendResponse({'card': ""});
             }
-        }
+          }
+        });
+        return true;
     }
     if (request.name == 'get_cards_for_window') {
     	SwitchIcon(1); //Show original icon, and hide alert
@@ -674,6 +683,7 @@ browser.tabs.onActivated.addListener(function(activeInfo) {
 	browser.tabs.query({currentWindow: true, active: true}, function(tabs){
 		IssetPageInCards(tabs[0].url);        
     });
+	return true;
 });
 
 browser.tabs.onUpdated.addListener(function(tab) {
