@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  	<meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+    <title>Passwordstate</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="js/popup.js"></script>
+  </head>
+  <body>
+        <div class="popup" id="popup">
+            <span class="title">
+                <img src="images/icon.png" class="title-image" />
+                Passwordstate
+                <span class="build-info"> (Extension Build <span id="build"></span>)</span>
+            </span>            
+            <div class="line"></div>
+            <div class="main-menu">                
+                <div class="item-menu" id="my_password_state_item">
+                    <div class="ico_img">
+                        <img src="images/website.png"/>
+                    </div>
+                    <span>Passwordstate Web Site</span>
+                </div>
+                <div class="item-menu" id="generate_password_item">
+                    <div class="ico_img">
+                        <img src="images/generate.png"/>
+                    </div>
+                    <span>Generate Password</span>
+                    <div class="ico_img_right">
+                        <img src="images/arrow_right.png"/>
+                    </div>
+                </div>
+                <div class="item-menu" id="show_site_passwordstate">
+                    <div class="ico_img">
+                        <img src="images/viewsite.png"/>
+                    </div>
+                    <span>Show Site in Passwordstate</span>
+                </div>
+                <div class="line"></div>
+                <div class="item-menu" id="my_help_item">
+                    <div class="ico_img">
+                        <img src="images/help.png" />
+                    </div>
+                    <span>Help</span>
+                </div>
+                <div class="line"></div>
+                <div class="item-menu" id="logout_item">
+                    <span>Logout</span>
+                    <div class="ico_img_right">
+                        <img src="images/logout.png"/>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="generate" id="generate">
+            <form>
+                <div class="main">
+                    <div id="backrow_generate" class="back">
+                        <div class="ico_img">
+                            <img src="images/arrow_left.png"/>
+                        </div>
+                        <span>Back</span>
+                    </div>
+                    
+                    <div class="popup" style='width: 100%;'>
+                        <div class="ico_img" style='padding-right: 5px;'>
+                            <img src="images/generate.png"/>
+                        </div>
+                        Generate New Password
+                        <div class="line"></div>
+                    </div>
+                    
+                    <input type="text" id="pass_generate" readonly>
+                    <input class="ok-btn" type="button" value="New" id="gen_generate">
+                    <input class="ok-btn" type="button" value="Apply" id="set_generate">
+                    <input class="ok-btn" type="button" value="Copy" id="copy_generate">
+                </div>
+            </form>
+        </div>
+        <input type="hidden" id="url_temp">
+        <div class="temp" id="temp"></div>
+  </body>
+</html>
+

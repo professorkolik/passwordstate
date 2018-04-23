@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Passwordstate</title>
+   <script type="text/javascript" src="js/versionmismatch.js"></script>
+    <style>
+        
+      .pref-item {
+      float: left;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .pref-item input {
+      float: right;
+    }
+
+    .main {
+      float: left;
+      min-width: 395px;
+      min-height: 190px;
+      font-family: "Segoe UI",Tahoma,arial,sans-serif; 
+      font-size: 14px;
+    }
+
+    .ico_img {
+          display: block;
+          width: 16px;
+          height: 16px;
+          float: left;
+          margin-right: 5px;
+      }
+
+    .ico_img img{
+          position: relative;
+          width: 16px;
+          height: 16px;
+    }
+    
+    input[type=button]:hover {
+        border-color: #0080af;
+        background-color: #0080af;
+        text-decoration: none;
+        color: #FFFFFF;
+    }
+
+    input[type=button] {
+        padding: 2px 10px 2px 10px;
+        border: 1px;
+        border-style: solid;
+        border-color: #cccccc;    
+        background-color: #f9f9f9;  
+        white-space: nowrap !important;
+        color: #000000;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px; /* future proofing */
+        -khtml-border-radius: 3px; /* for old Konqueror browsers */
+        cursor: pointer;
+    }
+
+    .back {
+      margin-bottom: 10px;
+      color: #c2c2c2;
+      height: 20px;
+      line-height: 20px;      
+      display:block;
+    }
+
+    .back span {
+      cursor: pointer;
+    }
+
+    .back:hover {
+      color: #000;
+    }
+
+    .line {
+        margin: 5px 0px 5px 0px;
+        border-top: 1px solid #E9EAF1; background-color: #fff;
+     }
+
+    .label-item {
+        float: left;
+    }
+  </style>
+  </head>
+<body>
+    <form>
+        <div class="main">
+            <div class="popup" style='width: 100%;'>
+                <div class="ico_img" style='padding-right: 5px;'>
+                    <img src="images/help.png" />
+                </div>
+                Build Mismatch Error
+                <div class="line"></div>
+            </div>
+            It appears you are using Browser Extension <strong>Build <span id="build"></span></strong> which is different compared to what your main Passwordstate web site expects.
+            <br /><br />
+            Please ask one of your Passwordstate Security Administrators to investigate. Version information can be found on the main Administration page within Passwordstate.
+        </div>
+    </form>
+</body>
+</html>

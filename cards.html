@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+    <title>Passwordstate</title>
+    <style>
+
+    .pref-item {
+      float: left;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .pref-item input {
+      float: right;
+    }
+
+    .main {
+      float: left;
+      min-width: 340px;
+      min-height: 160px;
+      font-family: "Segoe UI",Tahoma,arial,sans-serif; 
+      font-size: 14px;
+	  margin-left:5px;
+    }
+
+    .ico_img {
+          display: block;
+          width: 16px;
+          height: 16px;
+          float: left;
+          margin-right: 5px;
+      }
+
+    .ico_img img{
+          position: relative;
+          width: 16px;
+          height: 16px;
+    }
+    
+    input[type=button]:hover {
+        border-color: #0080af;
+        background-color: #0080af;
+        text-decoration: none;
+        color: #FFFFFF;
+    }
+
+    input[type=button] {
+        padding: 2px 10px 2px 10px;
+        border: 1px;
+        border-style: solid;
+        border-color: #cccccc;    
+        background-color: #f9f9f9;  
+        white-space: nowrap !important;
+        color: #000000;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px; /* future proofing */
+        -khtml-border-radius: 3px; /* for old Konqueror browsers */
+        cursor: pointer;
+    }
+
+    .back {
+      margin-bottom: 10px;
+      color: #c2c2c2;
+      height: 20px;
+      line-height: 20px;      
+      display:block;
+    }
+
+    .back span {
+      cursor: pointer;
+    }
+
+    .back:hover {
+      color: #000;
+    }
+
+    .line {
+        margin: 5px 0px 5px 0px;
+        border-top: 1px solid #E9EAF1; background-color: #fff;
+     }
+
+    .label-item {
+        float: left;
+    }
+    </style>
+    <script src="js/cards.js"></script>
+  </head>
+  <body>
+    <form>
+      <div class="main">
+        <div id="backrow" class="back">
+          <div class="ico_img">
+              <img src="images/arrow_left.png"/>
+          </div>
+          <span>Back</span>
+        </div>
+        <div class="popup" style='width: 100%;'>
+            <div class="ico_img" style='padding-right: 5px;'>
+                <img src="images/user.png" />
+            </div>
+            Multiple Logins Found
+            <div class="line"></div>
+        </div>
+        Please select the credential to login with.
+        <br><br>
+        <label class="label-item" for="user_id">UserName :</label>
+        <div class="pref-item" id="select"></div>
+        <div class="pref-item">
+            <input class="ok-btn" type="button" value="Apply" id="prim">
+        </div>
+    </div>
+    </form>
+  </body>
+</html>
+
