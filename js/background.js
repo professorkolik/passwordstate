@@ -295,19 +295,28 @@ function get_card_for_website(url) {
         }
       }
     }
+
+    element.url = site;
+
     if (password_id) {
+      var passwordPromises = [];
+
       for (var i = 0; i < password_id.length; i++) {
-        get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]).then(function(data) {
-          cards.push(data[0]);
+        var getPasswordForId = get_password_for_id(getStorageMemory('url'), getStorageMemory('auth_key'), password_id[i]);
 
-          element.url = site;
-          element.cards = cards;
-
-          resolve(element);
-        });
+        passwordPromises.push(getPasswordForId);
       }
+
+      Promise.all(passwordPromises).then(function (passwords) {
+        passwords.forEach(function (password) {
+          cards.push(password[0]);
+        });
+
+        element.cards = cards;
+
+        resolve(element);
+      });
     } else {
-      element.url = site;
       element.cards = cards;
 
       resolve(element);
@@ -563,8 +572,6 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 sendResponse({ 'password':  password});
             }
         );
-
-        return true;
     }
     
     if (request.name == 'copy_to_clipboard_password') {
@@ -586,7 +593,6 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }
           }
         });
-        return true;
     }
     if (request.name == 'get_cards_for_window') {
     	SwitchIcon(1); //Show original icon, and hide alert
@@ -677,6 +683,8 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.name == 'add_ignore_site') {
         add_ignore_domain(request.domain, getStorageMemory('url'), getStorageMemory('auth_key'));
     }
+
+    return true;
 });
 
 browser.tabs.onActivated.addListener(function(activeInfo) {
